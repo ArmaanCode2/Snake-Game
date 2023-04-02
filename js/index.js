@@ -8,6 +8,8 @@ const musicSound = new Audio('music/music.mp3');
 //getting div elements
 const scoreElem = document.querySelector("#score");
 const highscoreBox = document.querySelector("#highscoreBox");
+const musicElem = document.querySelector("#music");
+
 let score = 0;
 let speed = 5;
 let lastPaintTime = 0;
@@ -50,13 +52,13 @@ function gameEngine(){
     //Part 1: updating the snake variable
     if(isCollide(snakeArr)){
         gameOverSound.play();
-        musicSound.pause();
         inputDir = {x: 0, y: 0};
 
         alert("Game Over. Press any key to play again");
         snakeArr = [{x: 13, y: 15}];
-        musicSound.play();
         setScore(0);
+        speed = 5;
+        showSpeed(speed)
     }
 
     //if you have eaten the food increment the score and regenrate food
@@ -64,6 +66,7 @@ function gameEngine(){
         foodSound.play();
         setScore(score += 1);
         speed += 0.2;
+        showSpeed(speed)
         if(score > highscoreval){
             highscoreval = score;
         localStorage.setItem("highscore", JSON.stringify(highscoreval));
@@ -106,8 +109,18 @@ function gameEngine(){
     board.appendChild(foodElement);
 }
 
+function startMusic(e){
+    if(musicElem.checked){
+        musicSound.play();
+    }else{
+        musicSound.pause();
+    }
+}
 
-
+function showSpeed(val){
+    sp = Math.floor(val);
+    document.querySelector(".current-speed").innerHTML = `Current Speed: ${sp}`;
+}
 
 
 
@@ -137,13 +150,12 @@ if(highscore === null){
     localStorage.setItem("highscore", JSON.stringify(highscoreval));
 }else{
     highscoreval = JSON.parse(highscore);
-    highscoreBox.innerHTML = `High Score: ${highscore}`;
+    highscoreBox.innerHTML = `Highest Score: ${highscore}`;
 }
 
 window.requestAnimationFrame(main);
 window.addEventListener("keydown", e => {
     inputDir = {x: 0, y: 1}//starting the game
-    musicSound.play();
     moveSound.play();
     switch (e.key) {
         case "w":

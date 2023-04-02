@@ -26,7 +26,7 @@
 }
 
 #highscoreBox{
-    right: 260px;
+    right: 190px;
 }
 
 #board{
@@ -43,6 +43,9 @@
     background-color: rgb(186, 0, 186);
     border-radius: 12px;
     transform: scale(1.05);
+    /* background: url(../img/my-head.jpg); */
+    background-position-y: -4px;
+    background-repeat: no-repeat;
 }
 
 .snake{
@@ -52,4 +55,25 @@
 
 .food{
     background: linear-gradient(lightgreen, green);
+}
+
+.settings{
+    width: 18vw;
+    height: 80vh;
+    position: absolute;
+    top: 10%;
+    left: 0;
+    padding: 10px;
+}
+
+.settings div{
+    margin: 20px 0;
+}
+
+.game-info{
+    font-size: 23px;
+}
+
+.options{
+    font-size: 25px;
 }
