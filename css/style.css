@@ -25,8 +25,12 @@
     left: 350px;
 }
 
-#highscoreBox{
-    right: 190px;
+#highscoreElem{
+    position: absolute;    
+    top: 4%;
+    right: 0.5%;
+    font-size: 35px;
+    font-weight: bold;
 }
 
 #board{

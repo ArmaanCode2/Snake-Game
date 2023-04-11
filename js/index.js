@@ -7,7 +7,7 @@ const musicSound = new Audio('music/music.mp3');
 
 //getting div elements
 const scoreElem = document.querySelector("#score");
-const highscoreBox = document.querySelector("#highscoreBox");
+const highscoreElem = document.querySelector("#highscoreElem");
 const musicElem = document.querySelector("#music");
 
 let score = 0;
@@ -48,13 +48,27 @@ function isCollide(snake){
         
 }
 
+let highscore = localStorage.getItem(Object.keys(localStorage));
 function gameEngine(){
+    //checking for highest score
+    if(highscore === null){
+        highscore = 0;
+    }else{
+        highscore = localStorage.getItem(Object.keys(localStorage));
+    }
+
     //Part 1: updating the snake variable
     if(isCollide(snakeArr)){
         gameOverSound.play();
         inputDir = {x: 0, y: 0};
 
-        alert("Game Over. Press any key to play again");
+        //asking username when game ends
+        if(score > highscore){
+            const userName = prompt("Congratulations. You made the highest score. Please enter your name");
+            setLocalStorage(userName,score)
+        }else{
+            alert("Game Over. Press any key to play again");
+        }
         snakeArr = [{x: 13, y: 15}];
         setScore(0);
         speed = 5;
@@ -66,12 +80,7 @@ function gameEngine(){
         foodSound.play();
         setScore(score += 1);
         speed += 0.2;
-        showSpeed(speed)
-        if(score > highscoreval){
-            highscoreval = score;
-        localStorage.setItem("highscore", JSON.stringify(highscoreval));
-        highscoreBox.innerHTML = `High Score: ${highscoreval}`;
-        }
+        showSpeed(speed);
         snakeArr.unshift({x: snakeArr[0].x + inputDir.x, y: snakeArr[0].y + inputDir.y})
         let a = 2;
         let b = 16;
@@ -107,6 +116,8 @@ function gameEngine(){
     foodElement.style.gridColumnStart = food.x;
     foodElement.classList.add("food");
     board.appendChild(foodElement);
+
+    showScore();
 }
 
 function startMusic(e){
@@ -122,6 +133,16 @@ function showSpeed(val){
     document.querySelector(".current-speed").innerHTML = `Current Speed: ${sp}`;
 }
 
+//to display the highscore
+function showScore(){
+    let Ahighscore = localStorage.key(0);
+    let AhighscoreValue = localStorage.getItem(Ahighscore);
+    if (Ahighscore === null|| AhighscoreValue === null){
+        highscoreElem.innerHTML = `No High score`;
+    }else{
+        highscoreElem.innerHTML = `Highest Score By ${Ahighscore}: ${AhighscoreValue}`;
+    }
+}
 
 
 
@@ -144,13 +165,13 @@ function showSpeed(val){
 
 
 //main logic starts here
-let highscore = localStorage.getItem("highscore");
-if(highscore === null){
-    let highscoreval = 0;
-    localStorage.setItem("highscore", JSON.stringify(highscoreval));
-}else{
-    highscoreval = JSON.parse(highscore);
-    highscoreBox.innerHTML = `Highest Score: ${highscore}`;
+function setLocalStorage(username, score){
+    if(score > highscore){
+        localStorage.clear();
+        localStorage.setItem(username, JSON.stringify(score));
+    }else if(highscore === null){
+        highscoreElem.innerHTML = `no high score`;
+    }
 }
 
 window.requestAnimationFrame(main);
